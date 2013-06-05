@@ -9,6 +9,11 @@ gem 'sqlite3'
 
 gem 'resque-scheduler', :require => 'resque_scheduler'
 
+gem 'nokogiri'
+gem 'html_spellchecker'
+gem 'ffi-hunspell'
+gem 'anemone'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
