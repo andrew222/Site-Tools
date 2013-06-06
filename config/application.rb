@@ -9,8 +9,12 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-module RequestTest
+module SiteTools
   class Application < Rails::Application
+
+    # load mongoid database configuration
+    Mongoid.load!("config/mongoid.yml")
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

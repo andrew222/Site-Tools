@@ -1,4 +1,4 @@
-RequestTest::Application.routes.draw do
+SiteTools::Application.routes.draw do
 
   mount SecureResqueServer.new, :at => '/resque'
   

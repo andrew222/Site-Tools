@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-RequestTest::Application.load_tasks
+SiteTools::Application.load_tasks
