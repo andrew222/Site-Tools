@@ -6,7 +6,8 @@ gem 'rails', '3.2.11'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-
+gem 'execjs'
+gem 'therubyracer' 
 gem 'resque-scheduler', :require => 'resque_scheduler'
 
 gem 'nokogiri'
@@ -14,12 +15,22 @@ gem 'html_spellchecker'
 gem 'ffi-hunspell'
 gem 'anemone'
 
+# mongoid
+gem 'bson_ext', '1.6.0'
+gem 'mongo', '1.6.0'
+gem 'mongoid', '2.4.6'
+
+gem 'pry-rails'
+
+gem 'haml'
+# gem 'bootstrap-sass'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
+	gem 'twitter-bootstrap-rails'
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 

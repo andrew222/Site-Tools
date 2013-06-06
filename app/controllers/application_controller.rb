@@ -1,3 +1,16 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  helper_method :current_user
+
+  def current_user
+		User.find(session[:current_user_id]) unless session[:current_user_id].nil?
+	end
+	def login_required
+    if session[:current_user_id]
+      return true
+    end
+
+    flash[:warning]='Please login to continue'
+    redirect_to :controller => "users", :action => "signin"
+    return false 
+  end
 end

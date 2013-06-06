@@ -1,0 +1,22 @@
+%h2 Registration
+= form_tag(:action => :signup)
+
+%label{:for => "user_login"} User Name
+= text_field "user", "name", :size => 20
+
+%label{:for => "user_password"} Password
+= password_field "user", "password", :size => 20
+
+%label{:for => "user_password_confirmation"} Password Confirmation
+= password_field "user", "password_confirmation", :size => 20
+
+%label{:for => "user_email"} Email
+= text_field "user", "email", :size => 20 
+%br
+= submit_tag "Signup", :class => 'btn btn-primary'
+:javascript
+  $(document).ready(function(){
+    var top_lis = $('.navbar-inner ul.nav li');
+    top_lis.removeClass('active');
+    top_lis.filter('.signup').addClass('active');
+  });
