@@ -1,10 +1,10 @@
 development:
   host: localhost
-  database: request_test_development
+  database: site_tools_development
 
 test:
   host: localhost
-  database: request_test_test
+  database: site_tools_test
 
 # set these environment variables on your prod server
 production:

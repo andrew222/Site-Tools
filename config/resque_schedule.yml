@@ -1,5 +1,5 @@
 check_links:
-  cron: 2 * * * *
+  cron: 14 * * * *
   class: CheckLinksJob
   queue: check_links
   args:

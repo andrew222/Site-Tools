@@ -20,38 +20,45 @@ class CheckLinksJob
 		links = []
 		links = doc.css('a')
 		imgs = doc.css('img')
-		links.each do |link|
-	  		begin
-	  			link_url = link['href']
-	  			link_type = type_of_link(link_url, page_host)
-	  			p link_type
-	  			unless link_url.match(/^\//).nil?
-	  				link_url = page_url + link_url
-	  			end
-	  			p link_url
-	  			link_uri = URI(link_url)
-	  			if link_uri.scheme == 'http' || link_uri.scheme == 'https'
-			  		response = Net::HTTP.get_response(link_uri)
-		  			p response.code
-			  	end
-		  	rescue Exception => e  
-		  		p e
-		  	end
-		end
+		# links.each do |link|
+	 #  		begin
+	 #  			link_url = link['href']
+	 #  			link_type = type_of_link(link_url, page_host)
+	 #  			unless link_url.match(/^\//).nil?
+	 #  				link_url = page_url + link_url
+	 #  			end
+	 #  			link_uri = URI(link_url)
+	 #  			if link_uri.scheme == 'http' || link_uri.scheme == 'https'
+		# 	  		response = Net::HTTP.get_response(link_uri)
+		#   			p response.code
+		# 	  	end
+		#   	rescue Exception => e  
+		#   		p e
+		#   	end
+		# end
 
 		first_level_children = doc.css('body').children()
+
+		# init a spell dictionary
+		dict = FFI::Hunspell.dict
+		
 		first_level_children.each do |e|
 			if e.node_name != 'javascript' 
 				# translate string to Nokogiri documents
 				checked_node = Nokogiri::HTML(check_spell(e.to_html()))
 				error_elements = checked_node.css('span.misspelled')
 				error_elements.each do |e|
-					p '$$$$$$$$$$$$$$$error elements'
-					p e.to_html
-					p e.node_name
+					p e.text()
+					error_word = e.text()
+						unless dict.check?(error_word)
+							suggestion_words = dict.suggest(error_word)
+						end
+					error = SpellingError.new(:error_elem => e.parent(), :error_word => error_word, :suggestion_words => suggestion_words)
+					error.save
 				end
 			end
 		end
+
 
   end
 

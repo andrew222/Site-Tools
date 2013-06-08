@@ -9,7 +9,7 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-module RequestTest
+module SiteTools
   class Application < Rails::Application
     # load mongoid database configuration
     Mongoid.load!("config/mongoid.yml")
