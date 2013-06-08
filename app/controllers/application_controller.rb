@@ -2,7 +2,10 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def current_user
-		User.find(session[:current_user_id]) unless session[:current_user_id].nil?
+		user = User.find(session[:current_user_id]) unless session[:current_user_id].nil?
+    unless user.nil?
+      Site.current_user = user
+    end
 	end
 	def login_required
     if session[:current_user_id]
