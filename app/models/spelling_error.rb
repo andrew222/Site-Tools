@@ -3,5 +3,7 @@ class SpellingError
   field :error_word, :type => String
   field :error_elem, :type => String
   field :suggestion_words, :type => Array
+
+  belongs_to :site
 end
 

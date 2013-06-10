@@ -43,6 +43,7 @@ class SitesController < ApplicationController
 
     respond_to do |format|
       if @site.save
+        Resque.enqueue(CheckLinksJob, @site.id)
         format.html { redirect_to sites_path, notice: 'Site was successfully created.' }
         format.json { render json: @site, status: :created, location: @site }
       else
