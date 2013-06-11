@@ -1,11 +1,9 @@
 %p#notice= notice
-
+= link_to 'Back', sites_path
 %p
-  %b Name:
+  %b Site Name:
   = @site.name
 %p
-  %b Dom elem:
+  %b Site URL:
   = @site.url
-= link_to 'Edit', edit_site_path(@site)
-\|
-= link_to 'Back', sites_path
+= render 'layouts/site_summary'

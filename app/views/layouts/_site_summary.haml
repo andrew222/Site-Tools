@@ -1,0 +1,112 @@
+.container-fluid
+  .rows
+    .left_content.span2.bs-docs-sidebar
+      %ul.nav.nav-pills.nav-stacked.left_nav
+        %li BROKEN LINKS
+        %li.active
+          %a.broken_external_link{:href=>'#'} Broken external link
+        %li
+          %a.broken_internal_link{:href=>'#'} Broken internal link
+        %li SPELLING
+        %li
+          %a{ :href=>'#' } Likely spelling errors
+        %li Accessibility
+        %li
+          %a{ :href=>'#' } Character set
+        %li
+          %a{ :href=>'#' } Embed tags
+        %li
+          %a{ :href=>'#' } Form labels
+        %li
+          %a{ :href=>'#' } Formatting tags
+        %li
+          %a{ :href=>'#' } Headers
+        %li
+          %a{ :href=>'#' } Image alt or title attribute 
+        %li
+          %a{ :href=>'#' } Inconsistent link text
+        %li
+          %a{ :href=>'#' } Inline styles
+        %li
+          %a{ :href=>'#' } Input names
+        %li
+          %a{ :href=>'#' } Language code
+        %li
+          %a{ :href=>'#' } Legend text
+        %li
+          %a{ :href=>'#' } Nested tables
+        %li
+          %a{ :href=>'#' } Poor link text
+        %li
+          %a{ :href=>'#' } Refresh meta element
+        %li
+          %a{ :href=>'#' } Table summaries
+        %li
+          %a{ :href=>'#' } Tables for layout
+        %li
+          %a{ :href=>'#' } Tables headings
+        %li
+          %a{ :href=>'#' } Title attribute
+        %li
+          %a{ :href=>'#' } Title exist
+        %li SEO
+        %li
+          %a{ :href=>'#' } Description too long
+        %li
+          %a{ :href=>'#' } Document title length
+        %li
+          %a{ :href=>'#' } Meta description exists
+        %li
+          %a{ :href=>'#' } SEO Image description
+        %li
+          %a{ :href=>'#' } SEO Page refresh
+        %li
+          %a{ :href=>'#' } SEO Titles exist
+        %li
+          %a{ :href=>'#' } SEO headings
+        %li
+          %a{ :href=>'#' } SEO title attribute 
+        %li
+          %a{ :href=>'#' } Single h1 in document
+        %li
+          %a{ :href=>'#' } Spaces in url
+    .right_content.span10  WELCOME
+:javascript
+  $(document).ready(function(){
+    var top_lis = $('.navbar-inner ul.nav li');
+    top_lis.removeClass('active');
+    top_lis.filter('.home').addClass('active');
+
+    var left_nav_lis = $('.left_nav li');
+    left_nav_lis.bind('click', function(){
+      left_nav_lis.removeClass('active');
+      $(this).addClass('active');
+    })
+
+    var links = $('.left_nav a');
+    links.bind('click', function(){
+      var me = $(this),
+          _data,
+          _callback,
+          _beforeSend;
+      if(me.hasClass('broken_external_link')){
+        _data = {link_type: '0'};
+      }else if(me.hasClass('broken_internal_link')){
+        _data = {link_type: '1'};
+      }
+      _data.site_id = '#{@site.id}'
+      _callback = function(resp_text){
+        $('.right_content').html(resp_text);
+        $('img.loading_img').remove();
+      };
+      _beforeSend= function(){
+        $('.right_content').html('');
+        $('.right_content').append(loading_img);
+      };
+      sendAjaxRequest(app_url + '/broken_links.json', _data, 'json', 'get', _beforeSend, _callback);
+    })
+  });
+
+  $(document).ready(function(){
+    $('.broken_external_link').trigger('click');
+  });
