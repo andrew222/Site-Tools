@@ -1,6 +1,6 @@
 .container-fluid
   .rows
-    .span2.bs-docs-sidebar
+    .left_content.span2.bs-docs-sidebar
       %ul.nav.nav-pills.nav-stacked.left_nav
         %li BROKEN LINKS
         %li.active
@@ -70,7 +70,7 @@
           %a{ :href=>'#' } Single h1 in document
         %li
           %a{ :href=>'#' } Spaces in url
-    .span10  WELCOME
+    .right_content.span10  WELCOME
 :javascript
   $(document).ready(function(){
     var top_lis = $('.navbar-inner ul.nav li');
@@ -85,14 +85,23 @@
 
     var links = $('.left_nav a');
     links.bind('click', function(){
-      var me = $(this);
+      var me = $(this),
+          _data,
+          _callback,
+          _beforeSend;
       if(me.hasClass('broken_external_link')){
-        console.log(me);
-        var _data = {link_type: '0'};
-        var _callback = function(){
-          alert('success');
-        }
-        sendAjaxRequest(app_url + '/broken_links.json', _data, 'json', 'get', _callback);
+        _data = {link_type: '0'};
+      }else if(me.hasClass('broken_internal_link')){
+        _data = {link_type: '1'};
       }
+      _callback = function(resp_text){
+        $('.right_content').html(resp_text);
+        $('img.loading_img').remove();
+      };
+      _beforeSend= function(){
+        $('.right_content').html('');
+        $('.right_content').append(loading_img);
+      };
+      sendAjaxRequest(app_url + '/broken_links.json', _data, 'json', 'get', _beforeSend, _callback);
     })
   });

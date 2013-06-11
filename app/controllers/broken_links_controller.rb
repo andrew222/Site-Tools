@@ -2,12 +2,10 @@ class BrokenLinksController < ApplicationController
   # GET /broken_links
   # GET /broken_links.json
   def index
-    @broken_links = BrokenLink.all
-    p "$$$broken_links"
-    p @broken_links
+    @broken_links = BrokenLink.where(:link_type => params[:link_type])
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @broken_links }
+      format.json { render :partial => "broken_links" }
     end
   end
 

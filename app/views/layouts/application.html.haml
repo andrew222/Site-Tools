@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title Hawq
+    %title Site Tools
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
@@ -18,20 +18,17 @@
             %li.signup
               %a{:href => "/signup"} Sign Up
           - else
-            - if current_user.sites.exists?
-              %li.sites
-                .btn-group
-                  %a.btn.dropdown-toggle.btn-primary{"data-toggle" => "dropdown", :href => "#"}
-                    Sites
-                    %span.caret
-                  %ul.dropdown-menu
-                    - current_user.sites.each do |site|
-                      %li
-                        = link_to site.name, site
-                    %li.create_new_site
-                      %a{ :href => '/sites/new' } Create New Site
-                    %li.all_sites
-                      %a{ :href => '/sites' } All Sites
+            %li.sites
+              .btn-group
+                %a.btn.dropdown-toggle.btn-primary{"data-toggle" => "dropdown", :href => "#"}
+                  Sites
+                  %span.caret
+                %ul.dropdown-menu
+                  - current_user.sites.each do |site|
+                    %li
+                      = link_to site.name, site
+                  %li.create_new_site
+                    %a{ :href => '/sites/new' } Create New Site
               %li.site_summary
                 %a{ :href => '#' }Site Summary
             %li.setting
