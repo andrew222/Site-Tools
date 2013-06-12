@@ -9,7 +9,7 @@
           %a.broken_internal_link{:href=>'#'} Broken internal link
         %li SPELLING
         %li
-          %a{ :href=>'#' } Likely spelling errors
+          %a.spelling_error{ :href=>'#' } Likely spelling errors
         %li Accessibility
         %li
           %a{ :href=>'#' } Character set
@@ -86,13 +86,18 @@
     var links = $('.left_nav a');
     links.bind('click', function(){
       var me = $(this),
-          _data,
+          _request_url,
+          _data = {},
           _callback,
           _beforeSend;
       if(me.hasClass('broken_external_link')){
-        _data = {link_type: '0'};
+        _data.link_type = 0;
+        _request_url = app_url + '/broken_links.json';
       }else if(me.hasClass('broken_internal_link')){
-        _data = {link_type: '1'};
+        _data.link_type = 1;
+        _request_url = app_url + '/broken_links.json';
+      }else if(me.hasClass('spelling_error')){
+        _request_url = app_url + '/spelling_errors.json';
       }
       _data.site_id = '#{@site.id}'
       _callback = function(resp_text){
@@ -103,7 +108,7 @@
         $('.right_content').html('');
         $('.right_content').append(loading_img);
       };
-      sendAjaxRequest(app_url + '/broken_links.json', _data, 'json', 'get', _beforeSend, _callback);
+      sendAjaxRequest(_request_url, _data, 'json', 'get', _beforeSend, _callback);
     })
   });
 

@@ -4,6 +4,7 @@ SiteTools::Application.routes.draw do
 
   resources :sites
   resources :broken_links
+  resources :spelling_errors
   match 'signin' => 'users#signin', :as => 'signin'
   match 'logout' => 'users#logout', :as => :logout
   match 'signup' => 'users#signup', :as => :signup
