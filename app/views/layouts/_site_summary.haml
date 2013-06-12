@@ -1,75 +1,86 @@
 .container-fluid
   .rows
     .left_content.span2.bs-docs-sidebar
-      %ul.nav.nav-pills.nav-stacked.left_nav
-        %li BROKEN LINKS
-        %li.active
-          %a.broken_external_link{:href=>'#'} Broken external link
-        %li
-          %a.broken_internal_link{:href=>'#'} Broken internal link
-        %li SPELLING
-        %li
-          %a.spelling_error{ :href=>'#' } Likely spelling errors
-        %li Accessibility
-        %li
-          %a{ :href=>'#' } Character set
-        %li
-          %a{ :href=>'#' } Embed tags
-        %li
-          %a{ :href=>'#' } Form labels
-        %li
-          %a{ :href=>'#' } Formatting tags
-        %li
-          %a{ :href=>'#' } Headers
-        %li
-          %a{ :href=>'#' } Image alt or title attribute 
-        %li
-          %a{ :href=>'#' } Inconsistent link text
-        %li
-          %a{ :href=>'#' } Inline styles
-        %li
-          %a{ :href=>'#' } Input names
-        %li
-          %a{ :href=>'#' } Language code
-        %li
-          %a{ :href=>'#' } Legend text
-        %li
-          %a{ :href=>'#' } Nested tables
-        %li
-          %a{ :href=>'#' } Poor link text
-        %li
-          %a{ :href=>'#' } Refresh meta element
-        %li
-          %a{ :href=>'#' } Table summaries
-        %li
-          %a{ :href=>'#' } Tables for layout
-        %li
-          %a{ :href=>'#' } Tables headings
-        %li
-          %a{ :href=>'#' } Title attribute
-        %li
-          %a{ :href=>'#' } Title exist
-        %li SEO
-        %li
-          %a{ :href=>'#' } Description too long
-        %li
-          %a{ :href=>'#' } Document title length
-        %li
-          %a{ :href=>'#' } Meta description exists
-        %li
-          %a{ :href=>'#' } SEO Image description
-        %li
-          %a{ :href=>'#' } SEO Page refresh
-        %li
-          %a{ :href=>'#' } SEO Titles exist
-        %li
-          %a{ :href=>'#' } SEO headings
-        %li
-          %a{ :href=>'#' } SEO title attribute 
-        %li
-          %a{ :href=>'#' } Single h1 in document
-        %li
-          %a{ :href=>'#' } Spaces in url
+      .broken_links
+        %span BROKEN LINKS
+        %span.unfold_sub_menu.icon-minus
+        %ul.nav.nav-pills.nav-stacked.left_nav
+          %li.active
+            %a.broken_external_link{:href=>'#'} Broken external link
+          %li
+            %a.broken_internal_link{:href=>'#'} Broken internal link
+      .spelling_error
+        %span SPELLING
+        %span.unfold_sub_menu.icon-plus
+        %ul.nav.nav-pills.nav-stacked.left_nav.hide
+          %li
+            %a.spelling_error{ :href=>'#' } Likely spelling errors
+      .Accessibility
+        %span ACCESSIBILITY
+        %span.unfold_sub_menu.icon-plus
+        %ul.nav.nav-pills.nav-stacked.left_nav.hide
+          %li
+            %a{ :href=>'#' } Character set
+          %li
+            %a{ :href=>'#' } Embed tags
+          %li
+            %a{ :href=>'#' } Form labels
+          %li
+            %a{ :href=>'#' } Formatting tags
+          %li
+            %a{ :href=>'#' } Headers
+          %li
+            %a{ :href=>'#' } Image alt or title attribute 
+          %li
+            %a{ :href=>'#' } Inconsistent link text
+          %li
+            %a{ :href=>'#' } Inline styles
+          %li
+            %a{ :href=>'#' } Input names
+          %li
+            %a{ :href=>'#' } Language code
+          %li
+            %a{ :href=>'#' } Legend text
+          %li
+            %a{ :href=>'#' } Nested tables
+          %li
+            %a{ :href=>'#' } Poor link text
+          %li
+            %a{ :href=>'#' } Refresh meta element
+          %li
+            %a{ :href=>'#' } Table summaries
+          %li
+            %a{ :href=>'#' } Tables for layout
+          %li
+            %a{ :href=>'#' } Tables headings
+          %li
+            %a{ :href=>'#' } Title attribute
+          %li
+            %a{ :href=>'#' } Title exist
+      .seo
+        %span SEO
+        %span.unfold_sub_menu.icon-plus 
+        %ul.nav.nav-pills.nav-stacked.left_nav.hide
+          %li
+            %a{ :href=>'#' } Description too long
+          %li
+            %a{ :href=>'#' } Document title length
+          %li
+            %a{ :href=>'#' } Meta description exists
+          %li
+            %a{ :href=>'#' } SEO Image description
+          %li
+            %a{ :href=>'#' } SEO Page refresh
+          %li
+            %a{ :href=>'#' } SEO Titles exist
+          %li
+            %a{ :href=>'#' } SEO headings
+          %li
+            %a{ :href=>'#' } SEO title attribute 
+          %li
+            %a{ :href=>'#' } Single h1 in document
+          %li
+            %a{ :href=>'#' } Spaces in url
     .right_content.span10  WELCOME
 :javascript
   $(document).ready(function(){
@@ -111,6 +122,14 @@
       sendAjaxRequest(_request_url, _data, 'json', 'get', _beforeSend, _callback);
     })
   });
+
+  $(document).ready(function(){
+    $('.unfold_sub_menu').bind('click', function(){
+      var me = $(this);
+      me.toggleClass('icon-plus icon-minus');
+      me.next('ul').toggleClass('hide');
+    })
+  })
 
   $(document).ready(function(){
     $('.broken_external_link').trigger('click');
