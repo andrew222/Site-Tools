@@ -1,9 +1,8 @@
 %p#notice= notice
-= link_to 'Back', sites_path
-%p
-  %b Site Name:
-  = @site.name
-%p
-  %b Site URL:
-  = @site.url
 = render 'layouts/site_summary'
+
+:javascript
+  $(document).ready(function(){
+    $('.sites .btn').html('#{@site.name}');
+    $('.sites .btn').append('<span class="caret"></span>');
+  });
