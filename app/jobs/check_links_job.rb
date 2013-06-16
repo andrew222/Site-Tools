@@ -39,22 +39,23 @@ class CheckLinksJob
 		links = doc.css('a')
 		# # imgs = doc.css('img')
 		links.each do |link|
-	  		begin
-	  			link_url = link['href']
-	  			dom_elem = link.to_html()
-	  			link_type = type_of_link(link_url, page_host)
-	  			unless link_url.match(/^\//).nil?
-	  				link_url = page_url + link_url
-	  			end
-	  			link_uri = URI(link_url)
-	  			if link_uri.scheme == 'http' || link_uri.scheme == 'https'
-			  		response = Net::HTTP.get_response(link_uri)
-		  			@broken_link = site.broken_links.build(:dom_elem => dom_elem, :url => link_url, :status_code => response.code, :link_type => link_type)
-	  				@broken_link.save!
-			  	end
-		  	rescue Exception => e  
-		  		p e
+			link_url = link['href']
+			dom_elem = link.to_html()
+			link_type = type_of_link(link_url, page_host)
+			unless link_url.match(/^\//).nil?
+				link_url = page_url + link_url
+			end
+			link_uri = URI(link_url)
+			if link_uri.scheme == 'http' || link_uri.scheme == 'https'
+  			begin
+		  		response = Net::HTTP.get_response(link_uri)
+		  		status_code = response.status
+		  	rescue Exception => e 
+		  		status_code = request_exception(e)
+		  		p status_code
 		  	end
+	  	end
+  		save_broken_link(site, link_url, dom_elem, link_type, status_code)
 		end
   end
 
@@ -80,5 +81,22 @@ class CheckLinksJob
 					end
 				end
 			end
+  end
+
+  def self.request_exception(exception)
+		exp_str = exception.to_s
+		if exp_str.match(/timed out/).nil?
+			return 408
+		end
+  end
+
+  def self.save_broken_link(site, link_url, dom_elem, link_type, res_code)
+  	@broken_link = site.broken_links.where(:url => link_url, :dom_elem => dom_elem, :link_type => link_type)
+		if @broken_link.nil?
+			@broken_link = site.broken_links.build(:dom_elem => dom_elem, :url => link_url, :status_code => res_code, :link_type => link_type)
+		else
+			@broken_link.update_attribute(:status_code, res_code)
+		end
+		@broken_link.save!
   end
 end
