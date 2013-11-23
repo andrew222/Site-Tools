@@ -2,7 +2,7 @@
   %tr
     %th Error Word
     %th Error Elem
-  = @spelling_errors.each do |spelling_error|
+  - @spelling_errors.each do |spelling_error|
     %tr
       %td
         = spelling_error.error_word

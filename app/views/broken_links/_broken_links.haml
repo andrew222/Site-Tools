@@ -2,7 +2,7 @@
   %tr
     %th URL
     %th dom_elem
-  = @broken_links.each do |broken_link|
+  - @broken_links.each do |broken_link|
     %tr
       %td
         = broken_link.url
