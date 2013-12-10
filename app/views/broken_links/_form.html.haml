@@ -1,0 +1,25 @@
+= form_for @broken_link do |f|
+  - if @broken_link.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@broken_link.errors.count, "error")} prohibited this broken_link from being saved:"
+      %ul
+        - @broken_link.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :url
+    = f.text_area :url
+  .field
+    = f.label :dom_elem
+    = f.text_area :dom_elem
+  .field
+    = f.label :link_type
+    = f.number_field :link_type
+  .field
+    = f.label :recommendation
+    = f.text_area :recommendation
+  .field
+    = f.label :details
+    = f.text_area :details
+  .actions
+    = f.submit 'Save'

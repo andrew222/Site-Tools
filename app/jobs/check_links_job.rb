@@ -10,56 +10,14 @@ require 'anemone'
 class CheckLinksJob
   @queue = :check_links
 
-  def self.perform
-  	p 'check links'
-  	page_url = 'http://www.ekohe.com'
-  	page_host = URI(page_url).host
+  def self.perform(site_id)
+  	site = Site.find(site_id)
+  	page_url = site.url
     doc = Nokogiri::HTML(open(page_url))
-		# Search for nodes by css
-		# Check whether links are broken or not
-		links = []
-		links = doc.css('a')
-		imgs = doc.css('img')
-		# links.each do |link|
-	 #  		begin
-	 #  			link_url = link['href']
-	 #  			link_type = type_of_link(link_url, page_host)
-	 #  			unless link_url.match(/^\//).nil?
-	 #  				link_url = page_url + link_url
-	 #  			end
-	 #  			link_uri = URI(link_url)
-	 #  			if link_uri.scheme == 'http' || link_uri.scheme == 'https'
-		# 	  		response = Net::HTTP.get_response(link_uri)
-		#   			p response.code
-		# 	  	end
-		#   	rescue Exception => e  
-		#   		p e
-		#   	end
-		# end
+		# # Search for nodes by css
+		check_broken_links(doc, site)
 
-		first_level_children = doc.css('body').children()
-
-		# init a spell dictionary
-		dict = FFI::Hunspell.dict
-		
-		first_level_children.each do |e|
-			if e.node_name != 'javascript' 
-				# translate string to Nokogiri documents
-				checked_node = Nokogiri::HTML(check_spell(e.to_html()))
-				error_elements = checked_node.css('span.misspelled')
-				error_elements.each do |e|
-					p e.text()
-					error_word = e.text()
-						unless dict.check?(error_word)
-							suggestion_words = dict.suggest(error_word)
-						end
-					error = SpellingError.new(:error_elem => e.parent(), :error_word => error_word, :suggestion_words => suggestion_words)
-					error.save
-				end
-			end
-		end
-
-
+		check_spelling_errors(doc, site)
   end
 
   def self.type_of_link(link, host)
@@ -72,5 +30,73 @@ class CheckLinksJob
   
   def self.check_spell(text)
   	return HTML_Spellchecker.english.spellcheck(text)
+  end
+
+  def self.check_broken_links(doc, site)
+  	page_url = site.url
+  	page_host = URI(page_url).host
+  	# # Check whether links are broken or not
+		links = doc.css('a')
+		# # imgs = doc.css('img')
+		links.each do |link|
+			link_url = link['href']
+			dom_elem = link.to_html()
+			link_type = type_of_link(link_url, page_host)
+			unless link_url.match(/^\//).nil?
+				link_url = page_url + link_url
+			end
+			link_uri = URI(link_url)
+			if link_uri.scheme == 'http' || link_uri.scheme == 'https'
+  			begin
+		  		response = Net::HTTP.get_response(link_uri)
+		  		status_code = response.status
+		  	rescue Exception => e 
+		  		status_code = request_exception(e)
+		  		p status_code
+		  	end
+	  	end
+  		save_broken_link(site, link_url, dom_elem, link_type, status_code)
+		end
+  end
+
+  def self.check_spelling_errors(doc, site)
+			first_level_children = doc.css('body').children()
+
+			# init a spell dictionary
+			dict = FFI::Hunspell.dict('en_GB')
+
+			first_level_children.each do |e|
+				if e.node_name != 'javascript' 
+					# translate string to Nokogiri documents
+					checked_node = Nokogiri::HTML(check_spell(e.to_html()))
+					error_elements = checked_node.css('span.misspelled')
+					error_elements.each do |e|
+						p e.text()
+						error_word = e.text()
+							unless dict.check?(error_word)
+								suggestion_words = dict.suggest(error_word)
+							end
+						error = site.spelling_errors.new(:error_elem => e.parent(), :error_word => error_word, :suggestion_words => suggestion_words)
+						error.save
+					end
+				end
+			end
+  end
+
+  def self.request_exception(exception)
+		exp_str = exception.to_s
+		if exp_str.match(/timed out/).nil?
+			return 408
+		end
+  end
+
+  def self.save_broken_link(site, link_url, dom_elem, link_type, res_code)
+  	@broken_link = site.broken_links.where(:url => link_url, :dom_elem => dom_elem, :link_type => link_type)
+		if @broken_link.nil?
+			@broken_link = site.broken_links.build(:dom_elem => dom_elem, :url => link_url, :status_code => res_code, :link_type => link_type)
+		else
+			@broken_link.update_attribute(:status_code, res_code)
+		end
+		@broken_link.save!
   end
 end

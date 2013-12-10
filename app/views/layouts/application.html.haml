@@ -1,0 +1,56 @@
+!!!
+%html
+  %head
+    %title Site Tools
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    .navbar
+      .navbar-inner
+        %a.brand{:href => "/dashboard"} DashBoard
+        %ul.nav.top_left_nav
+          %li.home.active
+            %a{:href => "/"} Home
+          - if current_user.nil?  
+            %li.signin
+              %a{:href => "/signin"} Sign In
+            %li.signup
+              %a{:href => "/signup"} Sign Up
+          - else
+            %li.sites
+              .btn-group
+                %button.btn.btn-inverse{"data-toggle" => "dropdown"}
+                  Sites
+                  %span.caret
+                %ul.dropdown-menu
+                  - current_user.sites.each do |site|
+                    %li
+                      = link_to site.name, site
+                  %li.create_new_site
+                    %a{ :href => '/sites/new' } Create New Site
+              %li.site_summary
+                %a{ :href => '#' }Site Summary
+            %li.setting
+              .btn-group
+                %button.btn.btn-inverse{"data-toggle" => "dropdown"}
+                  Setting
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    %a{ :href => '#' } My Account
+                  %li
+                    %a{ :href => '#' } Add Account
+            %li.help
+              .btn-group
+                %button.btn.btn-inverse{"data-toggle" => "dropdown"}
+                  Help
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    %a{ :href => '#' } Tips
+                  %li
+                    %a{ :href => '#' } Surport
+            %li.logout
+              %a{:href => "/logout"} Log Out
+    = yield

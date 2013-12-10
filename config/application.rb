@@ -11,7 +11,6 @@ end
 
 module SiteTools
   class Application < Rails::Application
-
     # load mongoid database configuration
     Mongoid.load!("config/mongoid.yml")
     

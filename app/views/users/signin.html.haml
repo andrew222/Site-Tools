@@ -1,0 +1,17 @@
+%h2 Sign In
+= form_tag(:action => :signin)
+%label{:for => "user_login"} User Name
+= text_field "user", "name", :size => 20
+
+%label{:for => "user_password"} Password
+= password_field "user", "password", :size => 20
+%br
+= submit_tag "SignIn", :class => 'btn btn-primary'
+.signup
+  =link_to 'SignUp', 'signup'
+:javascript
+  $(document).ready(function(){
+    var top_lis = $('.navbar-inner ul.nav li');
+    top_lis.removeClass('active');
+    top_lis.filter('.signin').addClass('active');
+  });

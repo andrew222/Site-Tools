@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Url:
+  = @broken_link.url
+%p
+  %b Dom elem:
+  = @broken_link.dom_elem
+%p
+  %b Link type:
+  = @broken_link.link_type
+%p
+  %b Recommendation:
+  = @broken_link.recommendation
+%p
+  %b Details:
+  = @broken_link.details
+
+= link_to 'Edit', edit_broken_link_path(@broken_link)
+\|
+= link_to 'Back', broken_links_path

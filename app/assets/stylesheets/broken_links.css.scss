@@ -1,0 +1,13 @@
+// Place all the styles related to the BrokenLinks controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.broken_links_tab{
+	text-align: left;
+}
+.broken_links_tab tr:not(:first-child){
+	height: 36px;
+	border-bottom: 1px solid;
+	&:hover{
+		background-color: yellow;
+	}
+}

@@ -1,6 +1,18 @@
 SiteTools::Application.routes.draw do
 
   mount SecureResqueServer.new, :at => '/resque'
+
+  resources :sites
+  resources :broken_links
+  resources :spelling_errors
+  match 'signin' => 'users#signin', :as => 'signin'
+  match 'logout' => 'users#logout', :as => :logout
+  match 'signup' => 'users#signup', :as => :signup
+  match 'dashboard' => 'users#dashboard', :as => :dashboard
+
+
+  root :to => 'users#dashboard'
+  
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

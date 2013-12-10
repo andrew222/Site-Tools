@@ -1,0 +1,10 @@
+.spelling_errors_tab{
+	text-align: left;
+}
+.spelling_errors_tab tr:not(:first-child){
+	height: 36px;
+	border-bottom: 1px solid;
+	&:hover{
+		background-color: yellow;
+	}
+}
