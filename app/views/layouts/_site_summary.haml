@@ -103,10 +103,10 @@
           _beforeSend;
       if(me.hasClass('broken_external_link')){
         _data.link_type = 0;
-        _request_url = app_url + '/broken_links.json';
+        _request_url = app_url + '/broken_links';
       }else if(me.hasClass('broken_internal_link')){
         _data.link_type = 1;
-        _request_url = app_url + '/broken_links.json';
+        _request_url = app_url + '/broken_links';
       }else if(me.hasClass('spelling_error')){
         _request_url = app_url + '/spelling_errors.json';
       }

@@ -1,6 +1,6 @@
 class Site
   require 'nokogiri'
-	require 'open-uri'
+  require 'open-uri'
 
   include Mongoid::Document
   field :url, type: String
@@ -10,6 +10,6 @@ class Site
   has_many :broken_links, dependent: :delete
   has_many :spelling_errors, dependent: :delete
   
-	cattr_accessor :current_user
+  cattr_accessor :current_user
 
 end

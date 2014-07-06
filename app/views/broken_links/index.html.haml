@@ -1,4 +1,4 @@
-%h1 Listing broken_links
+%h1= t("links.title") 
 
 %table
   %tr
@@ -21,7 +21,7 @@
       %td= link_to 'Show', broken_link
       %td= link_to 'Edit', edit_broken_link_path(broken_link)
       %td= link_to 'Destroy', broken_link, method: :delete, data: { confirm: 'Are you sure?' }
-
+= will_paginate @broken_links
 %br
 
 = link_to 'New Broken link', new_broken_link_path

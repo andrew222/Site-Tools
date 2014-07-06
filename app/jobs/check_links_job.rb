@@ -14,10 +14,14 @@ class CheckLinksJob
   	site = Site.find(site_id)
   	page_url = site.url
     doc = Nokogiri::HTML(open(page_url))
-		# # Search for nodes by css
-		check_broken_links(doc, site)
+    # # Search for nodes by css
+    wait_for_request_again = check_broken_links(doc, site)
 
-		check_spelling_errors(doc, site)
+    wait_for_request_again.each do |link|
+      doc = Nokogiri::HTML(open(link))
+      check_broken_links(doc, site)
+    end
+    check_spelling_errors(doc, site)
   end
 
   def self.type_of_link(link, host)
@@ -33,30 +37,36 @@ class CheckLinksJob
   end
 
   def self.check_broken_links(doc, site)
+    wait_for_request_again = []
   	page_url = site.url
   	page_host = URI(page_url).host
   	# # Check whether links are broken or not
-		links = doc.css('a')
-		# # imgs = doc.css('img')
-		links.each do |link|
-			link_url = link['href']
-			dom_elem = link.to_html()
-			link_type = type_of_link(link_url, page_host)
-			unless link_url.match(/^\//).nil?
-				link_url = page_url + link_url
-			end
-			link_uri = URI(link_url)
-			if link_uri.scheme == 'http' || link_uri.scheme == 'https'
-  			begin
-		  		response = Net::HTTP.get_response(link_uri)
-		  		status_code = response.status
-		  	rescue Exception => e 
-		  		status_code = request_exception(e)
-		  		p status_code
-		  	end
-	  	end
-  		save_broken_link(site, link_url, dom_elem, link_type, status_code)
-		end
+    links = doc.css('a')
+    # # imgs = doc.css('img')
+    links.each do |link|
+        link_url = link['href']
+        dom_elem = link.to_html()
+        link_type = type_of_link(link_url, page_host)
+        unless link_url.match(/^\//).nil?
+            link_url = page_url + link_url
+        end
+        link_uri = URI(link_url)
+        if link_uri.scheme == 'http' || link_uri.scheme == 'https'
+            begin
+                response = Net::HTTP.get_response(link_uri)
+                status_code = response.status
+            rescue Exception => e 
+                status_code = request_exception(e)
+                p status_code
+            end
+        end
+        if status_code == 408
+          wait_for_request_again << link_url
+        else
+          save_broken_link(site, link_url, dom_elem, link_type, status_code)
+        end
+    end
+    return wait_for_request_again
   end
 
   def self.check_spelling_errors(doc, site)
@@ -92,11 +102,10 @@ class CheckLinksJob
 
   def self.save_broken_link(site, link_url, dom_elem, link_type, res_code)
   	@broken_link = site.broken_links.where(:url => link_url, :dom_elem => dom_elem, :link_type => link_type)
-		if @broken_link.nil?
-			@broken_link = site.broken_links.build(:dom_elem => dom_elem, :url => link_url, :status_code => res_code, :link_type => link_type)
-		else
-			@broken_link.update_attribute(:status_code, res_code)
-		end
-		@broken_link.save!
+    if @broken_link.length == 0
+      @broken_link = site.broken_links.create(:dom_elem => dom_elem, :url => link_url, :status_code => res_code, :link_type => link_type)
+    else
+      @broken_link.update_all({status_code: res_code})
+    end
   end
 end

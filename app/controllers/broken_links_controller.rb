@@ -1,8 +1,15 @@
+require 'will_paginate/array'
+
 class BrokenLinksController < ApplicationController
   # GET /broken_links
   # GET /broken_links.json
   def index
-    @broken_links = current_user.sites.find(params[:site_id]).broken_links.where(:link_type => params[:link_type])
+    @broken_links = current_user
+                      .sites
+                        .find(params[:site_id])
+                          .broken_links
+                            .where(:link_type => params[:link_type])
+                              .paginate(:page => params[:page], per_page: 15)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :partial => "broken_links" }

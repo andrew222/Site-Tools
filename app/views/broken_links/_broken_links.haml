@@ -8,3 +8,4 @@
         = broken_link.url
       %td
         = broken_link.dom_elem
+= will_paginate @broken_links, renderer: BootstrapPagination::Rails, previous_label: t("links.pre_page"), next_label: t("links.next_page")
