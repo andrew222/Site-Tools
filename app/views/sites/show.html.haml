@@ -1,5 +1,16 @@
 %p#notice= notice
-= render 'layouts/site_summary'
+-#= render 'layouts/site_summary'
+.tabbable
+  %ul.nav.nav-tabs
+    %li.active
+      %a{"data-toggle" => "tab", href: "#internal_links"}= t("links.internal_links")
+    %li
+      %a{"data-toggle" => "tab", href: "#external_links"}= t("links.external_links")
+  .tab-content
+    #internal_links.tab-pane.active
+      = render partial: "broken_links/broken_links", :locals => { :@broken_links => @external_broken_links }
+    #external_links.tab-pane
+      = render partial: "broken_links/broken_links", :locals => { :@broken_links => @internal_broken_links }
 
 :javascript
   $(document).ready(function(){

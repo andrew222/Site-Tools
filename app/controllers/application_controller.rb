@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 class ApplicationController < ActionController::Base
   helper_method :current_user
 

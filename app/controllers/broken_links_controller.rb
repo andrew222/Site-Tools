@@ -1,8 +1,8 @@
-require 'will_paginate/array'
-
 class BrokenLinksController < ApplicationController
   # GET /broken_links
   # GET /broken_links.json
+  before_filter :check_site
+
   def index
     @broken_links = current_user
                       .sites
@@ -19,7 +19,7 @@ class BrokenLinksController < ApplicationController
   # GET /broken_links/1
   # GET /broken_links/1.json
   def show
-    @broken_link = current_user.sites.broken_link.find(params[:id])
+    @broken_link = @site.broken_links.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -35,7 +35,7 @@ class BrokenLinksController < ApplicationController
 
   # GET /broken_links/1/edit
   def edit
-    @broken_link = current_user.sites.broken_link.find(params[:id])
+    @broken_link = @site.broken_links.find(params[:id])
   end
 
   # POST /broken_links
@@ -53,12 +53,16 @@ class BrokenLinksController < ApplicationController
   # DELETE /broken_links/1
   # DELETE /broken_links/1.json
   def destroy
-    @broken_link = current_user.sites.broken_link.find(params[:id])
+    @broken_link = @site.broken_links.find(params[:id])
     @broken_link.destroy
 
     respond_to do |format|
-      format.html { redirect_to broken_links_url }
+    format.html { redirect_to @site }
       format.json { head :no_content }
     end
+  end
+
+  def check_site
+    @site = current_user.sites.find(params[:site_id])
   end
 end

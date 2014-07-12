@@ -2,7 +2,10 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  sites:
   links: 
     title: "Broken Links List"
+    external_links: "External Broken Links"
+    internal_links: "Internal Broken Links"
     next_page: "Next"
     pre_page: "Previous"

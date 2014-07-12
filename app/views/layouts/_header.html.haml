@@ -1,0 +1,41 @@
+.navbar
+  .navbar-inner
+    %a.brand{:href => "/dashboard"} DashBoard
+    %ul.nav.top_left_nav
+      %li.home.active
+        %a{:href => "/"} Home
+      - if current_user.nil?  
+        %li.signin
+          %a{:href => "/signin"} Sign In
+        %li.signup
+          %a{:href => "/signup"} Sign Up
+      - else
+        %li.sites.dropdown
+          %a{"href" => "#", "data-toggle" => "dropdown"}
+            Sites
+            %b.caret
+          %ul.dropdown-menu
+            %li
+              = link_to t("sites.all"), sites_path
+        %li.site_summary
+          %a{ :href => '#' }Site Summary
+        %li.setting.dropdown
+          %a{"href" => "#", "data-toggle" => "dropdown"}
+            Setting
+            %b.caret
+          %ul.dropdown-menu
+            %li
+              %a{ :href => '#' } My Account
+            %li
+              %a{ :href => '#' } Add Account
+        %li.help.dropdown
+          %a{"href" => "#", "data-toggle" => "dropdown"}
+            Help
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              %a{ :href => '#' } Tips
+            %li
+              %a{ :href => '#' } Surport
+        %li.logout
+          %a{:href => "/logout"} Log Out

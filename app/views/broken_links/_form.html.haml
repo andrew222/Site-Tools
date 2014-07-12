@@ -1,4 +1,4 @@
-= form_for @broken_link do |f|
+= form_for [@site, @broken_link] do |f|
   - if @broken_link.errors.any?
     #error_explanation
       %h2= "#{pluralize(@broken_link.errors.count, "error")} prohibited this broken_link from being saved:"

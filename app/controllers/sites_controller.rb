@@ -13,6 +13,8 @@ class SitesController < ApplicationController
   # GET /sites/1.json
   def show
     @site = current_user.sites.find(params[:id])
+    @external_broken_links = @site.broken_links.where(:link_type => 0).paginate(page: params[:page])
+    @internal_broken_links = @site.broken_links.where(:link_type => 1).paginate(page: params[:page])
 
     respond_to do |format|
       format.html # show.html.erb

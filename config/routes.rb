@@ -2,8 +2,9 @@ SiteTools::Application.routes.draw do
 
   mount SecureResqueServer.new, :at => '/resque'
 
-  resources :sites
-  resources :broken_links
+  resources :sites do
+    resources :broken_links
+  end
   resources :spelling_errors
   match 'signin' => 'users#signin', :as => 'signin'
   match 'logout' => 'users#logout', :as => :logout

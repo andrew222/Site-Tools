@@ -2,6 +2,6 @@
 
 = render 'form'
 
-= link_to 'Show', @broken_link
+= link_to 'Show', site_broken_link_path(@broken_link)
 \|
-= link_to 'Back', broken_links_path
+= link_to 'Back', site_broken_link_path(@broken_link)

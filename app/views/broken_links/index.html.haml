@@ -1,6 +1,6 @@
 %h1= t("links.title") 
 
-%table
+%table.broken_links_tab
   %tr
     %th Url
     %th Dom elem
@@ -21,7 +21,7 @@
       %td= link_to 'Show', broken_link
       %td= link_to 'Edit', edit_broken_link_path(broken_link)
       %td= link_to 'Destroy', broken_link, method: :delete, data: { confirm: 'Are you sure?' }
-= will_paginate @broken_links
+= will_paginate @broken_links, renderer: BootstrapPagination::Rails, previous_label: t("links.pre_page"), next_label: t("links.next_page")
 %br
 
 = link_to 'New Broken link', new_broken_link_path
