@@ -15,3 +15,8 @@
         = link_to '', edit_site_path(site), class: "icon-edit"
         = link_to '', site, method: :delete, data: { confirm: 'Are you sure?' }, class: "icon-trash"
 = link_to 'New Site', new_site_path, class: "btn"
+:javascript
+  $(document).ready(function(){
+    $(".navbar-inner li").removeClass("active");
+    $(".navbar-inner").find(".sites").addClass("active");
+  })

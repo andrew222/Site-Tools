@@ -5,7 +5,7 @@
     %th Link type
     %th Recommendation
     %th Details
-    %th= t("shared.action")
+    %th.actions= t("shared.action")
   - @broken_links.each do |broken_link|
     %tr
       %td= broken_link.url
@@ -13,7 +13,7 @@
       %td= broken_link.link_type
       %td= broken_link.recommendation
       %td= broken_link.details
-      %td
+      %td.actions
         = link_to '', site_broken_link_path(@site, broken_link), class: "icon-check"
         = link_to '', edit_site_broken_link_path(@site, broken_link), class: "icon-edit"
         = link_to '', site_broken_link_path(@site, broken_link), method: :delete, data: { confirm: 'Are you sure?' }, class: "icon-trash"
