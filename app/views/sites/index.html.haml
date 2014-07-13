@@ -1,21 +1,17 @@
 %h1 Listing Sites
 
-%table
+%table.table.table-striped.site_list
   %tr
     %th Site Name
     %th Base URL
-    %th
-    %th
-    %th
+    %th= t("shared.action")
 
   - @sites.each do |site|
     %tr
       %td= site.name
       %td= site.url
-      %td= link_to 'Show', site
-      %td= link_to 'Edit', edit_site_path(site)
-      %td= link_to 'Destroy', site, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Site', new_site_path
+      %td
+        = link_to '', site, class: "icon-check"
+        = link_to '', edit_site_path(site), class: "icon-edit"
+        = link_to '', site, method: :delete, data: { confirm: 'Are you sure?' }, class: "icon-trash"
+= link_to 'New Site', new_site_path, class: "btn"

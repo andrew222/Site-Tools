@@ -7,9 +7,7 @@
     %th Link type
     %th Recommendation
     %th Details
-    %th
-    %th
-    %th
+    %th= t("shared.action")
 
   - @broken_links.each do |broken_link|
     %tr
@@ -18,9 +16,10 @@
       %td= broken_link.link_type
       %td= broken_link.recommendation
       %td= broken_link.details
-      %td= link_to 'Show', broken_link
-      %td= link_to 'Edit', edit_broken_link_path(broken_link)
-      %td= link_to 'Destroy', broken_link, method: :delete, data: { confirm: 'Are you sure?' }
+      %td
+        = link_to '', broken_link
+        = link_to 'Edit', edit_broken_link_path(broken_link)
+        = link_to 'Destroy', broken_link, method: :delete, data: { confirm: 'Are you sure?' }
 = will_paginate @broken_links, renderer: BootstrapPagination::Rails, previous_label: t("links.pre_page"), next_label: t("links.next_page")
 %br
 

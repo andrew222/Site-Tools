@@ -1,0 +1,10 @@
+.site_list {
+  th, td {
+    text-align: center;
+    a {
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
+}

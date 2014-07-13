@@ -1,11 +1,11 @@
-%table.broken_links_tab
+%table.table.table-striped.broken_links_tab
   %tr
     %th URL
     %th dom_elem
     %th Link type
     %th Recommendation
     %th Details
-    %th{"colspan" => 3}
+    %th= t("shared.action")
   - @broken_links.each do |broken_link|
     %tr
       %td= broken_link.url
@@ -13,7 +13,8 @@
       %td= broken_link.link_type
       %td= broken_link.recommendation
       %td= broken_link.details
-      %td= link_to 'Show', site_broken_link_path(@site, broken_link)
-      %td= link_to 'Edit', edit_site_broken_link_path(@site, broken_link)
-      %td= link_to 'Destroy', site_broken_link_path(@site, broken_link), method: :delete, data: { confirm: 'Are you sure?' }
+      %td
+        = link_to '', site_broken_link_path(@site, broken_link), class: "icon-check"
+        = link_to '', edit_site_broken_link_path(@site, broken_link), class: "icon-edit"
+        = link_to '', site_broken_link_path(@site, broken_link), method: :delete, data: { confirm: 'Are you sure?' }, class: "icon-trash"
 = will_paginate @broken_links, renderer: BootstrapPagination::Rails, previous_label: t("links.pre_page"), next_label: t("links.next_page")
